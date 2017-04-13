@@ -6,10 +6,9 @@ var Sequelize = require('sequelize');
 // http://docs.sequelizejs.com/en/v3/docs/getting-started/
 // http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU
 
-var sequelize = new Sequelize('postgres://:@localhost:5432/krisszafranski');
+var database = new Sequelize('postgres://:@localhost:5432/krisszafranski');
 
-
-var Book = sequelize.define('books', {
+var Book = database.define('books', {
   title: {
     type: Sequelize.STRING,
     allowNull: false
