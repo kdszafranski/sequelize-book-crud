@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var pg = require('pg');
-var connectionString = 'postgres://localhost:5432/sigma';
 var Sequelize = require('sequelize');
 
 // REFERENCES
@@ -40,79 +38,84 @@ var Book = sequelize.define('books', {
 router.get('/', function(req, res) {
   console.log('get request');
   // get books from DB
-  Book.findAll({}).then(function(books) {
-    res.send(books);
-  });
+  Book.findAll({})
+    .then(function(books) {
+      res.send(books);
+    });
 });
+
 
 router.post('/', function(req, res) {
   var newBook = req.body;
-
-  Book.create(newBook).then(function(book) {
-    console.log('new book', book);
-    res.sendStatus(201)
-  })
-  .catch(function(err) {
-    console.log('error', err.errors);
-    res.sendStatus(500);
-  });
-
-});
-
-router.delete('/:id', function(req, res) {
-  bookID = req.params.id;
-
-  console.log('book id to delete: ', bookID);
-  pg.connect(connectionString, function(err, client, done) {
-    if(err) {
-      console.log('connection error: ', err);
+  console.log('create new book');
+  Book.create(newBook)
+    .then(function(book) {
+      console.log('new book', book);
+      res.sendStatus(201)
+    })
+    .catch(function(err) {
+      console.log('error on create');
       res.sendStatus(500);
-    }
-
-    client.query(
-      'DELETE FROM books WHERE id = $1',
-      [bookID],
-      function(err, result) {
-        done();
-
-        if(err) {
-          res.sendStatus(500);
-        } else {
-          res.sendStatus(200);
-        }
-      });
     });
 
 });
 
 router.put('/:id', function(req, res) {
-  bookID = req.params.id;
-  book = req.body;
+  bookId = req.params.id;
+  updatedBook = req.body;
 
-  console.log('book to update ', book);
+  console.log('book to update ', updatedBook);
 
-  pg.connect(connectionString, function(err, client, done) {
-    if(err) {
-      console.log('connection error: ', err);
-      res.sendStatus(500);
+  Book.update(
+    updatedBook,
+    {
+      where: {
+        id: bookId
+      }
     }
+  )
+  .then(function(book) {
+    console.log('updated book', book);
+    res.sendStatus(200);
+  })
+  .catch(function(err) {
+    console.log('error on update');
+    res.sendStatus(500);
+  });
 
-    client.query(
-      'UPDATE books SET title=$1, author=$2, genre=$3, published=$4, edition=$5, publisher=$6' +
-      ' WHERE id=$7',
-      // array of values to use in the query above
-      [book.title, book.author, book.genre, book.published, book.edition, book.publisher, bookID],
-      function(err, result) {
-        if(err) {
-          console.log('update error: ', err);
-          res.sendStatus(500);
-        } else {
-          res.sendStatus(200);
-        }
-      });
-    }); // close connect
+
+
+  // Book.find({
+  //   where: {
+  //     id: bookId
+  //   }
+  // }).then(function(abook) {
+  //   if(abook) {
+  //     abook.update(updatedBook)
+  //       .then(function(booooook) {
+  //         console.log('UPDATED BOOK:', booooook);
+  //         res.sendStatus(200);
+  //       })
+  //       .catch(function() {
+  //         console.log('here');
+  //         res.sendStatus(500);
+  //       })
+  //   } else {
+  //     console.log('book not found');
+  //     res.sendStatus(500);
+  //   }
+  // });
+
 
 }); // end route
 
+
+
+router.delete('/:id', function(req, res) {
+  bookID = req.params.id;
+
+  console.log('book id to delete: ', bookID);
+
+});
 
 module.exports = router;
