@@ -35,22 +35,20 @@ function postBook() {
   $.each($('#book-form').serializeArray(), function (i, field) {
     book[field.name] = field.value;
   });
-  // convert edition to integer
-  book.edition = parseInt(book.edition);
 
   console.log('book: ', book);
 
   $.ajax({
     type: 'POST',
     url: '/books',
-    // data: book,
-    success: function(response) {
-      getBooks();
-    },
-    error: function() {
-      console.log('could not post a new book');
-    }
+    data: book
   })
+  .done(function(response) {
+    getBooks();
+  })
+  .fail(function(err) {
+    console.log('could not post a new book', err);
+  });
 
 }
 

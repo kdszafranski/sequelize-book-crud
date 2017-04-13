@@ -4,29 +4,35 @@ var pg = require('pg');
 var connectionString = 'postgres://localhost:5432/sigma';
 var Sequelize = require('sequelize');
 
+// REFERENCES
 // http://docs.sequelizejs.com/en/v3/docs/getting-started/
+// http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU
 
 var sequelize = new Sequelize('postgres://:@localhost:5432/krisszafranski');
 
 
 var Book = sequelize.define('books', {
   title: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   author: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   page_count: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    allowNull: false
   },
   published: {
-    type: Sequelize.DATE
+    type: Sequelize.DATE,
+    allowNull: false
   }
 }, {
   freezeTableName: true // Model tableName will be the same as the model name
 });
 
-// This forces a DROP TABLE
+// This forces a DROP TABLE and rebuilds the structure from above schema
 // Book.sync({force: true}).then(function () {
 //   // insert data here.
 // });
@@ -35,43 +41,21 @@ router.get('/', function(req, res) {
   console.log('get request');
   // get books from DB
   Book.findAll({}).then(function(books) {
-    if(books) {
-      res.send(books);
-    } else {
-      res.sendStatus(500);
-    }
-
+    res.send(books);
   });
 });
 
 router.post('/', function(req, res) {
   var newBook = req.body;
+
   Book.create(newBook).then(function(book) {
-    console.log('new book?', book);
-    res.sendStatus(201);
+    console.log('new book', book);
+    res.sendStatus(201)
+  })
+  .catch(function(err) {
+    console.log('error', err.errors);
+    res.sendStatus(500);
   });
-  // pg.connect(connectionString, function(err, client, done) {
-  //   if(err) {
-  //     console.log('connection error: ', err);
-  //     res.sendStatus(500);
-  //   }
-  //
-  //   client.query(
-  //     'INSERT INTO books (title, author, published, genre, edition, publisher) ' +
-  //     'VALUES ($1, $2, $3, $4, $5, $6)',
-  //     [newBook.title, newBook.author, newBook.published, newBook.genre, newBook.edition, newBook.publisher],
-  //     function(err, result) {
-  //       done();
-  //
-  //       if(err) {
-  //         console.log('insert query error: ', err);
-  //         res.sendStatus(500);
-  //       } else {
-  //         res.sendStatus(201);
-  //       }
-  //     });
-  //
-  // });
 
 });
 
