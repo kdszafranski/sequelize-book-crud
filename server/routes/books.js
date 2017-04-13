@@ -83,8 +83,6 @@ router.put('/:id', function(req, res) {
     res.sendStatus(500);
   });
 
-
-
   // Book.find({
   //   where: {
   //     id: bookId
@@ -112,9 +110,21 @@ router.put('/:id', function(req, res) {
 
 
 router.delete('/:id', function(req, res) {
-  bookID = req.params.id;
+  bookId = req.params.id;
 
-  console.log('book id to delete: ', bookID);
+  Book.destroy({
+    where: {
+      id: bookId
+    }
+  })
+  .then(function() {
+    console.log('deleted?');
+    res.sendStatus(200);
+  })
+  .catch(function(err) {
+    console.log('error on delete');
+    res.sendStatus(500);
+  });
 
 });
 
