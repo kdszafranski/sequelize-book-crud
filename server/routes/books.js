@@ -2,56 +2,76 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 var connectionString = 'postgres://localhost:5432/sigma';
+var Sequelize = require('sequelize');
+
+// http://docs.sequelizejs.com/en/v3/docs/getting-started/
+
+var sequelize = new Sequelize('postgres://:@localhost:5432/krisszafranski');
+
+
+var Book = sequelize.define('books', {
+  title: {
+    type: Sequelize.STRING
+  },
+  author: {
+    type: Sequelize.STRING
+  },
+  page_count: {
+    type: Sequelize.INTEGER
+  },
+  published: {
+    type: Sequelize.DATE
+  }
+}, {
+  freezeTableName: true // Model tableName will be the same as the model name
+});
+
+// This forces a DROP TABLE
+// Book.sync({force: true}).then(function () {
+//   // insert data here.
+// });
 
 router.get('/', function(req, res) {
   console.log('get request');
   // get books from DB
-  pg.connect(connectionString, function(err, client, done) {
-    if(err) {
-      console.log('connection error: ', err);
+  Book.findAll({}).then(function(books) {
+    if(books) {
+      res.send(books);
+    } else {
       res.sendStatus(500);
     }
-
-    client.query('SELECT * FROM books', function(err, result) {
-      done(); // close the connection.
-
-      // console.log('the client!:', client);
-
-      if(err) {
-        console.log('select query error: ', err);
-        res.sendStatus(500);
-      }
-      res.send(result.rows);
-
-    });
 
   });
 });
 
 router.post('/', function(req, res) {
   var newBook = req.body;
-  pg.connect(connectionString, function(err, client, done) {
-    if(err) {
-      console.log('connection error: ', err);
-      res.sendStatus(500);
-    }
-
-    client.query(
-      'INSERT INTO books (title, author, published, genre, edition, publisher) ' +
-      'VALUES ($1, $2, $3, $4, $5, $6)',
-      [newBook.title, newBook.author, newBook.published, newBook.genre, newBook.edition, newBook.publisher],
-      function(err, result) {
-        done();
-
-        if(err) {
-          console.log('insert query error: ', err);
-          res.sendStatus(500);
-        } else {
-          res.sendStatus(201);
-        }
-      });
-
+  Book.create(newBook).then(function(book) {
+    console.log('new book?', book);
+    res.sendStatus(201);
   });
+  // pg.connect(connectionString, function(err, client, done) {
+  //   if(err) {
+  //     console.log('connection error: ', err);
+  //     res.sendStatus(500);
+  //   }
+  //
+  //   client.query(
+  //     'INSERT INTO books (title, author, published, genre, edition, publisher) ' +
+  //     'VALUES ($1, $2, $3, $4, $5, $6)',
+  //     [newBook.title, newBook.author, newBook.published, newBook.genre, newBook.edition, newBook.publisher],
+  //     function(err, result) {
+  //       done();
+  //
+  //       if(err) {
+  //         console.log('insert query error: ', err);
+  //         res.sendStatus(500);
+  //       } else {
+  //         res.sendStatus(201);
+  //       }
+  //     });
+  //
+  // });
 
 });
 

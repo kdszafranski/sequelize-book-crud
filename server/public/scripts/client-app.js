@@ -43,7 +43,7 @@ function postBook() {
   $.ajax({
     type: 'POST',
     url: '/books',
-    data: book,
+    // data: book,
     success: function(response) {
       getBooks();
     },
@@ -117,16 +117,15 @@ function appendBooks(books) {
     // console.log(convertedDate);
 
     var convertedDate = book.published.substr(0, 10);
-    console.log(convertedDate);
+    console.log('convertedDate: ', convertedDate);
 
     $el.append('<input type="text" name="title" value="' + book.title + '" />');
     $el.append('<input type="text" name="author" value="' + book.author + '" />');
-    $el.append('<input type="text" name="genre" value="' + book.genre + '" />');
     var newDate = $('<input type="date" name="published" />');
     newDate.val(convertedDate)
     $el.append(newDate);
-    $el.append('<input type="number" name="edition" value="' + book.edition + '" />');
-    $el.append('<input type="text" name="publisher" value="' + book.publisher + '" />');
+
+    $el.append('<input type="text" name="page_count" value="' + book.page_count + '" />');
 
     $el.append('<button class="update">Update</button>');
     $el.append('<button class="delete">Delete</button>');
