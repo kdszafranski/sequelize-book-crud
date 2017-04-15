@@ -14,14 +14,13 @@ $(document).ready(function () {
 function getBooks() {
   $.ajax({
     type: 'GET',
-    url: '/books',
-    success: function(books) {
-      appendBooks(books);
-    },
-    error: function() {
-      console.log('Database error');
-    }
-
+    url: '/books'
+  })
+  .done(function(books) {
+    appendBooks(books);
+  })
+  .fail(function(err) {
+    console.log('could not get books: ', err.statusText);
   })
 }
 /**
@@ -48,7 +47,7 @@ function postBook(event) {
     getBooks();
   })
   .fail(function(err) {
-    console.log('could not post a new book', err);
+    console.log('could not post a new book', err.statusText);
   });
 
 }
@@ -59,13 +58,13 @@ function deleteBook() {
 
   $.ajax({
     type: 'DELETE',
-    url: '/books/' + id,
-    success: function(result) {
+    url: '/books/' + id
+  })
+  .done(function(result) {
       getBooks();
-    },
-    error: function(result) {
-      console.log('could not delete book.');
-    }
+  })
+  .fail(function(result) {
+    console.log('could not delete book.', err.statusText);
   });
 }
 
@@ -84,14 +83,14 @@ function updateBook() {
   $.ajax({
     type: 'PUT',
     url: '/books/' + id,
-    data: book,
-    success: function(result) {
-      console.log('updated!!!!');
-      getBooks();
-    },
-    error: function(result) {
-      console.log('could not update book!');
-    }
+    data: book
+  })
+  .done(function(result) {
+    console.log('updated!!!!');
+    getBooks();
+  })
+  .fail(function(result) {
+    console.log('could not update book!', err.statusText);
   });
 
 }
@@ -104,7 +103,7 @@ function appendBooks(books) {
     $el = $('#book-list').children().last();
     var book = books[i];
     $el.data('id', book.id);
-    console.log("Date from DB: ", book.published);
+    // console.log("Date from DB: ", book.published);
 
     // convert the date
     // book.date = new Date(book.published);
@@ -116,7 +115,7 @@ function appendBooks(books) {
     // console.log(convertedDate);
 
     var convertedDate = book.published.substr(0, 10);
-    console.log('convertedDate: ', convertedDate);
+    // console.log('convertedDate: ', convertedDate);
 
     $el.append('<input type="text" name="title" value="' + book.title + '" />');
     $el.append('<input type="text" name="author" value="' + book.author + '" />');

@@ -2,12 +2,13 @@ var express = require('express');
 var router = express.Router();
 var app = require('../app');
 
+// require in Book model
 var Book = app.get('models').Book;
 
 // Use this to build a table for the book model
-// This forces a DROP TABLE and rebuilds the structure from above schema
+// This forces a DROP TABLE and rebuilds the structure from the Book schema
 // Book.sync({force: true}).then(function () {
-//   // insert data here.
+//   // OPTIONAL: insert data here.
 // });
 
 router.get('/', function(req, res) {
@@ -22,14 +23,14 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   var newBook = req.body;
-  console.log('create new book');
+  console.log('create new book', newBook);
+
   Book.create(newBook)
     .then(function(book) {
-      // console.log('new book', book);
       res.sendStatus(201)
     })
     .catch(function(err) {
-      console.log('error on create');
+      console.log('error on create: ', err);
       res.sendStatus(500);
     });
 
@@ -37,12 +38,15 @@ router.post('/', function(req, res) {
 
 router.put('/:id', function(req, res) {
   bookId = req.params.id;
-  updatedBook = req.body;
+  updatedBookData = req.body;
 
-  console.log('book to update ', updatedBook);
-
+  // console.log('book to update: ', updatedBookData);
   Book.update(
-    updatedBook,
+    /***
+    * we can pass in the entire object if the properties match the model
+    * otherwise, we could define just the columns to update
+    ***/
+    updatedBookData,
     {
       where: {
         id: bookId
@@ -50,14 +54,14 @@ router.put('/:id', function(req, res) {
     }
   )
   .then(function(book) {
-    console.log('updated book', book);
     res.sendStatus(200);
   })
   .catch(function(err) {
-    console.log('error on update');
+    console.log('error on update: ', err);
     res.sendStatus(500);
   });
 
+  // Alt version: Find the book, then update it
   // Book.find({
   //   where: {
   //     id: bookId
@@ -93,11 +97,11 @@ router.delete('/:id', function(req, res) {
     }
   })
   .then(function() {
-    console.log('deleted?');
+    console.log('delete successful');
     res.sendStatus(200);
   })
   .catch(function(err) {
-    console.log('error on delete');
+    console.log('error on delete: ', err);
     res.sendStatus(500);
   });
 

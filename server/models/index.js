@@ -3,13 +3,16 @@ var Sequelize = require('sequelize');
 // initialize database connection
 var sequelize = new Sequelize('postgres://:@localhost:5432/krisszafranski');
 
-// load models from files
+// define model names
 var models = [
   'Book'
 ];
+
+// load models from files based on above names
 models.forEach(function(model) {
   var path = __dirname + '/' + model;
   console.log('loading model: ', path);
+  // export each model by its name
   module.exports[model] = sequelize.import(path);
 });
 
