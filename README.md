@@ -14,5 +14,6 @@ See  `server/models/index.js` for other starting notes.
 
 ## Sequelize Links
 - [Getting Started Docs](http://docs.sequelizejs.com/en/v3/docs/getting-started/)
-- [A solid CRUD example with more on set-up and migrations](http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU)
-- [Primer on setting up model file modules, though I found it incomplete](https://dzone.com/articles/sequelize-javascript-orm)
+- [A good CRUD example with more on set-up and migrations](http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU)
+- [Solid post on the practicality of Sequelize](https://dzone.com/articles/sequelize-javascript-orm)
+  - Has great examples and discusses setting up model file modules. I still had to do a lot of trial and error to get modules to work.
