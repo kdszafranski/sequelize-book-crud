@@ -2,7 +2,7 @@ $(document).ready(function () {
     getBooks();
 
     // add a book
-    $('#book-submit').on('click', postBook);
+    $('#book-form').on('submit', postBook);
     // delete a book
     $("#book-list").on('click', '.delete', deleteBook);
     // update a book
@@ -27,7 +27,8 @@ function getBooks() {
 /**
  * Add a new book to the database and refresh the DOM
  */
-function postBook() {
+function postBook(event) {
+  console.log('post');
   event.preventDefault();
 
   var book = {};

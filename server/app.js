@@ -2,6 +2,10 @@ var express =  require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+module.exports = app;
+app.set('models', require('./models/index'));
+
+// must run after setting the models on app
 var books = require('./routes/books');
 
 app.use(bodyParser.urlencoded({ extended: true }));

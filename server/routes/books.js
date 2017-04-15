@@ -1,37 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var Sequelize = require('sequelize');
+var app = require('../app');
 
-// REFERENCES
-// http://docs.sequelizejs.com/en/v3/docs/getting-started/
-// http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU
+var Book = app.get('models').Book;
 
-// model file
-// https://dzone.com/articles/sequelize-javascript-orm
-
-var database = new Sequelize('postgres://:@localhost:5432/krisszafranski');
-
-var Book = database.define('books', {
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  author: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  page_count: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
-  published: {
-    type: Sequelize.DATE,
-    allowNull: false
-  }
-}, {
-  freezeTableName: true // Model tableName will be the same as the model name
-});
-
+// Use this to build a table for the book model
 // This forces a DROP TABLE and rebuilds the structure from above schema
 // Book.sync({force: true}).then(function () {
 //   // insert data here.
@@ -52,7 +25,7 @@ router.post('/', function(req, res) {
   console.log('create new book');
   Book.create(newBook)
     .then(function(book) {
-      console.log('new book', book);
+      // console.log('new book', book);
       res.sendStatus(201)
     })
     .catch(function(err) {
