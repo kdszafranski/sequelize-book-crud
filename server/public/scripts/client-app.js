@@ -99,28 +99,19 @@ function appendBooks(books) {
   $("#book-list").empty();
 
   for (var i = 0; i < books.length; i++) {
+    var book = books[i];
+
     $("#book-list").append('<div class="row book"></div>');
     $el = $('#book-list').children().last();
-    var book = books[i];
     $el.data('id', book.id);
-    // console.log("Date from DB: ", book.published);
-
-    // convert the date
-    // book.date = new Date(book.published);
-    // var month = book.date.getUTCMonth(book.date) + 1; // number
-    // var day = book.date.getUTCDate(book.date);
-    // console.log('day', day);
-    // var year = book.date.getUTCFullYear(book.date);
-    // var convertedDate = book.date.toLocaleDateString();//month + '/' + day + '/' + year;
-    // console.log(convertedDate);
-
-    var convertedDate = book.published.substr(0, 10);
-    // console.log('convertedDate: ', convertedDate);
 
     $el.append('<input type="text" name="title" value="' + book.title + '" />');
     $el.append('<input type="text" name="author" value="' + book.author + '" />');
+
+    // convert date format to work with HTML5 date input
+    var convertedDate = book.published.substr(0, 10);
     var newDate = $('<input type="date" name="published" />');
-    newDate.val(convertedDate)
+    newDate.val(convertedDate);
     $el.append(newDate);
 
     $el.append('<input type="text" name="page_count" value="' + book.page_count + '" />');

@@ -1,13 +1,13 @@
 {
-  "name": "prime-node-books",
+  "name": "sequelize-book-crud",
   "version": "1.0.0",
-  "description": "Teaching how to incorporate postgres into a Node application",
+  "description": "Basic CRUD app built with Node and Sequelize",
   "main": "app.js",
   "scripts": {
     "start": "node server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "antoinette@primeacademy.io",
+  "author": "kris@primeacademy.io",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",

@@ -5,8 +5,8 @@ var app = require('../app');
 // require in Book model
 var Book = app.get('models').Book;
 
-// Use this to build a table for the book model
-// This forces a DROP TABLE and rebuilds the structure from the Book schema
+// @NOTE Uncomment the next block to build the table in postgres
+// @NOTE This forces a DROP TABLE and rebuilds the structure from the Book schema
 // Book.sync({force: true}).then(function () {
 //   // OPTIONAL: insert data here.
 // });
