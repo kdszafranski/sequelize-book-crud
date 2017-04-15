@@ -10,11 +10,11 @@ module.exports = app;
 // must run after setting the models on app
 var books = require('./routes/books');
 
-// mount middelware
+// Middelware
 app.use(express.static('./server/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Our routes
+// Routes
 app.use('/books', books);
 
 // Catchall route
