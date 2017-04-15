@@ -36,6 +36,7 @@ router.post('/', function(req, res) {
 
 });
 
+
 router.put('/:id', function(req, res) {
   bookId = req.params.id;
   updatedBookData = req.body;
@@ -83,9 +84,7 @@ router.put('/:id', function(req, res) {
   //   }
   // });
 
-
-}); // end route
-
+}); // end put route
 
 
 router.delete('/:id', function(req, res) {
