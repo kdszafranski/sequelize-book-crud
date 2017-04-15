@@ -14,7 +14,11 @@ var Book = app.get('models').Book;
 router.get('/', function(req, res) {
   console.log('get request');
   // get books from DB
-  Book.findAll({})
+  Book.findAll({
+    order: [
+      ['updatedAt', 'DESC']
+    ]
+  })
     .then(function(books) {
       res.send(books);
     });

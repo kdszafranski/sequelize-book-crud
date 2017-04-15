@@ -1,3 +1,10 @@
+// SEQUELIZE REFERENCES
+// http://docs.sequelizejs.com/en/v3/docs/getting-started/
+// http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU
+
+// setting up model file modules
+// https://dzone.com/articles/sequelize-javascript-orm
+
 var Sequelize = require('sequelize');
 
 // initialize database connection
