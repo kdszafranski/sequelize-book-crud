@@ -1,5 +1,6 @@
 // @NOTE This file is used to load all model files from the models folder (this folder)
 // Seems to be the best/only way to allow central definition and modularization of model files
+// because defining a model requires a DB connection...?
 var Sequelize = require('sequelize');
 
 // initialize database connection
