@@ -5,6 +5,8 @@
 // setting up model file modules
 // https://dzone.com/articles/sequelize-javascript-orm
 
+// @NOTE This file is used to load all model files from the models folder (this folder)
+// Seems to be the best/only way to allow central definition and modularization of model files
 var Sequelize = require('sequelize');
 
 // initialize database connection
