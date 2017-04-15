@@ -1,10 +1,3 @@
-// SEQUELIZE REFERENCES
-// http://docs.sequelizejs.com/en/v3/docs/getting-started/
-// http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WO_S0hLyvMU
-
-// setting up model file modules
-// https://dzone.com/articles/sequelize-javascript-orm
-
 // @NOTE This file is used to load all model files from the models folder (this folder)
 // Seems to be the best/only way to allow central definition and modularization of model files
 var Sequelize = require('sequelize');
